@@ -8,7 +8,7 @@
 - Name, Student Number
 - Name, Student Number
 
-## TL;DR: Short Abstract
+## TL;DR: Short Abstract (XingXing)
 
 Write one or two sentences describing your main idea, approach and deliverable.
 
@@ -22,7 +22,8 @@ Write one or two pages describing your proposed project in more detail.
 Describe 3 related resources to your proposed project.
 
 - End to End Driving 
-- Generative Replay
+- Continual learning 
+- 5 baselines
 
 ### Summary of Technical Aspect 
 
