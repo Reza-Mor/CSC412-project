@@ -32,6 +32,7 @@ If it is unclear, please emphasize the relevance to our course Probabilistic Lea
 
 - Describe generative replay in more detail
 - Describe how we apply it to End to End driving
+- Implementation and environment details (Reza)
 
 ### Project Deliverable Goals
 
