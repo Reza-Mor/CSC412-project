@@ -12,7 +12,7 @@
 
 Write one or two sentences describing your main idea, approach and deliverable.
 
-## Extended Abstract (Reza)
+## Extended Abstract
 
 Write one or two pages describing your proposed project in more detail.
 - overview of the problem and catosrophic forgetting
@@ -21,9 +21,10 @@ Write one or two pages describing your proposed project in more detail.
 
 Describe 3 related resources to your proposed project.
 
-- End to End Driving 
-- Continual learning 
-- 5 baselines
+- Intro (1 paragraph)
+- End to End Driving (1 paragraph)  
+- Continual learning and 5 baselines (1 paragraph)
+
 
 ### Summary of Technical Aspect 
 
