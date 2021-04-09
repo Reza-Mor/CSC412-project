@@ -20,7 +20,6 @@ class Flatten(nn.Module):
     
 
 class DiscreteDrivingPolicy(nn.Module):
-
     def __init__(self, n_classes):
         super().__init__()
         self.n_classes = n_classes
@@ -51,14 +50,13 @@ class DiscreteDrivingPolicy(nn.Module):
         )  
         
         self.apply(weights_init)
-        
-        
+
     def forward(self, x):
         f = self.features(x)
         logits = self.classifier(f)
         return logits
     
-    def eval(self, state, device):
+    def test(self, state, device):
         state = state.astype(np.float32)
         state = np.ascontiguousarray(np.transpose(state, (2, 0, 1)))
         state = torch.tensor(state).to(torch.device(device))
