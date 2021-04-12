@@ -30,7 +30,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--lr", type=float, help="learning rate", default=1e-3)
-    parser.add_argument("--n_epochs", type=int, help="number of epochs", default=50)
+    parser.add_argument("--n_epochs", type=int, help="number of epochs", default=30)
     parser.add_argument("--batch_size", type=int, help="batch_size", default=256)
     parser.add_argument("--n_steering_classes", type=int, help="number of steering classes", default=20)
     parser.add_argument("--train_dir", help="directory of training data", default='./dataset/train')
