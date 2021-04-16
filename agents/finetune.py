@@ -17,7 +17,8 @@ class Finetune():
         self.loss_weights = torch.where(class_dist == 0, class_dist, 1 / class_dist).to(DEVICE)  # get the inverse frequency
 
         opt = torch.optim.Adam(self.model.parameters(), lr=self.args.lr)
-        for trainset in trainsets:
+        for k, trainset in enumerate(trainsets):
+            print('Training Task ', k)
             training_iterator = DataLoader(trainset, batch_size=self.args.batch_size, shuffle=True, num_workers=0)
             for epoch in range(self.args.n_epochs):
                 print('EPOCH ', epoch)
@@ -57,7 +58,7 @@ class Finetune():
     def test(self, valsets):
         self.model.eval()
         with torch.no_grad():
-            for valset in valsets:
+            for k, valset in enumerate(valsets):
                 validation_iterator = DataLoader(valset, batch_size=self.args.batch_size, shuffle=False, num_workers=0)
                 acc_hist = []
                 for i_batch, batch in enumerate(validation_iterator):
@@ -71,6 +72,7 @@ class Finetune():
                     acc = acc.detach().cpu().numpy()
                     acc_hist.append(acc)
                 avg_acc = np.asarray(acc_hist).mean()
-                print('\tVal: \tAcc: {}'.format(
+                print('\tTask {} val acc: {}'.format(
+                    k,
                     avg_acc,
                 ))
