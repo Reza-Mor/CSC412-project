@@ -1,11 +1,9 @@
 import torch
-import torch.nn as nn
 
 import numpy as np
-from torchvision import datasets, transforms
-from torch.utils.data import Dataset, DataLoader
 import argparse
 import agents.finetune
+import agents.ewc
 import random
 
 from dataset_loader import get_dataset
@@ -23,7 +21,11 @@ def main(args):
 
     training_datasets, validation_datasets = get_dataset(args)
     driving_policy = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
-    agent = agents.finetune.Finetune(args, driving_policy)
+
+    if args.agent == 'finetune':
+        agent = agents.finetune.Finetune(args, driving_policy)
+    else:
+        agent = agents.ewc.EWC(args, driving_policy)
     agent.train(training_datasets, validation_datasets)
 
 
@@ -32,6 +34,7 @@ if __name__ == "__main__":
     parser.add_argument("--lr", type=float, help="learning rate", default=1e-3)
     parser.add_argument("--n_epochs", type=int, help="number of epochs", default=30)
     parser.add_argument("--batch_size", type=int, help="batch_size", default=256)
+    parser.add_argument("--agent", type=str, help="learning agent to use", default="finetune")
     parser.add_argument("--n_steering_classes", type=int, help="number of steering classes", default=20)
     parser.add_argument("--train_dir", help="directory of training data", default='./dataset/train')
     parser.add_argument("--validation_dir", help="directory of validation data", default='./dataset/val')
