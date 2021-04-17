@@ -71,6 +71,7 @@ class EWC():
             for n, p in self.running_fisher.items():
                 self.normalized_fisher[n] = (p - min_fisher) / (max_fisher - min_fisher + 1e-32)
 
+            self.model.save_weights(self.args, k)
             # Evaluate the driving policy on the validation set
             self.test(valsets)
 

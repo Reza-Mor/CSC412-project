@@ -57,11 +57,12 @@ def get_dataset(args):
         spl = UnivariateSpline(x, y)
         return spl(range(256))
 
+    incr_ch_lut = create_LUT_8UC1([0, 64, 128, 192, 256],
+                                  [0, 70, 140, 210, 256])
+    decr_ch_lut = create_LUT_8UC1([0, 64, 128, 192, 256],
+                                  [0, 30, 80, 120, 192])
     def color_filter_warm(image):
-        incr_ch_lut = create_LUT_8UC1([0, 64, 128, 192, 256],
-                                      [0, 70, 140, 210, 256])
-        decr_ch_lut = create_LUT_8UC1([0, 64, 128, 192, 256],
-                                      [0, 30, 80, 120, 192])
+
         c_r, c_g, c_b = cv2.split(image)
         c_r = cv2.LUT(c_r, incr_ch_lut).astype(np.uint8)
         c_b = cv2.LUT(c_b, decr_ch_lut).astype(np.uint8)
@@ -69,6 +70,17 @@ def get_dataset(args):
 
         c_h, c_s, c_v = cv2.split(cv2.cvtColor(image, cv2.COLOR_RGB2HSV))
         c_s = cv2.LUT(c_s, incr_ch_lut).astype(np.uint8)
+        return cv2.cvtColor(cv2.merge((c_h, c_s, c_v)), cv2.COLOR_HSV2RGB)
+
+    def color_filter_cool(image):
+        c_r, c_g, c_b = cv2.split(image)
+        c_r = cv2.LUT(c_r, decr_ch_lut).astype(np.uint8)
+        c_b = cv2.LUT(c_b, incr_ch_lut).astype(np.uint8)
+        image = cv2.merge((c_r, c_g, c_b))
+
+        # decrease color saturation
+        c_h, c_s, c_v = cv2.split(cv2.cvtColor(image, cv2.COLOR_RGB2HSV))
+        c_s = cv2.LUT(c_s, decr_ch_lut).astype(np.uint8)
         return cv2.cvtColor(cv2.merge((c_h, c_s, c_v)), cv2.COLOR_HSV2RGB)
 
     def gauss_noise_1(image, mu=0.4, variance=0.2):
@@ -95,23 +107,26 @@ def get_dataset(args):
                                         classes=args.n_steering_classes,
                                         transform=transforms.Compose(base_test_transforms))
 
+    task_1_transforms = [gauss_noise_1 if args.noise_type == 'gaussian' else color_filter_cool, *base_train_transforms]
+
     training_dataset_1 = DrivingDataset(root_dir=args.train_dir,
                                         categorical=True,
                                         classes=args.n_steering_classes,
-                                        transform=transforms.Compose([gauss_noise_1, *base_train_transforms]))
+                                        transform=transforms.Compose(task_1_transforms))
 
     validation_dataset_1 = DrivingDataset(root_dir=args.validation_dir,
                                           categorical=True,
                                           classes=args.n_steering_classes,
-                                          transform=transforms.Compose([gauss_noise_1, *base_test_transforms]))
+                                          transform=transforms.Compose(task_1_transforms))
+    task_2_transforms = [gauss_noise_2 if args.noise_type == 'gaussian' else color_filter_warm, *base_train_transforms]
     training_dataset_2 = DrivingDataset(root_dir=args.train_dir,
                                         categorical=True,
                                         classes=args.n_steering_classes,
-                                        transform=transforms.Compose([gauss_noise_2, *base_train_transforms]))
+                                        transform=transforms.Compose(task_2_transforms))
 
     validation_dataset_2 = DrivingDataset(root_dir=args.validation_dir,
                                           categorical=True,
                                           classes=args.n_steering_classes,
-                                          transform=transforms.Compose([gauss_noise_2, *base_test_transforms]))
+                                          transform=transforms.Compose(task_2_transforms))
 
     return [training_dataset_0, training_dataset_1, training_dataset_2], [validation_dataset_0, validation_dataset_1, validation_dataset_2]

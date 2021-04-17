@@ -38,11 +38,10 @@ if __name__ == "__main__":
     parser.add_argument("--n_steering_classes", type=int, help="number of steering classes", default=20)
     parser.add_argument("--train_dir", help="directory of training data", default='./dataset/train')
     parser.add_argument("--validation_dir", help="directory of validation data", default='./dataset/val')
-    parser.add_argument("--weights_out_file", help="where to save the weights of the network e.g. ./weights/learner_0.weights",
-                        required=True)
-    parser.add_argument("--weighted_loss", type=str2bool,
-                        help="should you weight the labeled examples differently based on their frequency of occurence",
-                        default=False)
+    parser.add_argument("--weights_out_folder", help="where to save the weights of the network",
+                        default='weights')
+    parser.add_argument("--noise_type", help="type of noise added to each task",
+                        default='gaussian')
     
     args = parser.parse_args()
 

@@ -52,6 +52,7 @@ class Finetune():
                             i_batch / len(training_iterator) * 100,
                             np.asarray(loss_hist)[-PRINT_INTERVAL:].mean(0)
                         ))
+            self.model.save_weights(self.args, k)
             # Evaluate the driving policy on the validation set
             self.test(valsets)
 
