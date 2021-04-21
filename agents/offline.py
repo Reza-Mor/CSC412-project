@@ -8,6 +8,7 @@ from torch import nn
 import time
 import numpy as np
 import torch.nn.functional as F
+from  draw_plots import  drawLearningCurve
 
 class Offline():
     def __init__(self, args):
@@ -23,6 +24,8 @@ class Offline():
         for k, trainset in enumerate(trainsets):
             print('Training Task ', k)
             training_iterator = DataLoader(trainset, batch_size=1, shuffle=True, num_workers=0)
+            recode = dict()
+            recode[k] = []
             for epoch in range(self.args.n_epochs):
                 print('EPOCH ', epoch)
                 # Train the driving policy
@@ -57,7 +60,7 @@ class Offline():
                         ))
             # Evaluate the driving policy on the validation set
             self.test(valsets)
-
+        drawLearningCurve(recode)
     def test(self, valsets):
         self.model.eval()
         with torch.no_grad():
