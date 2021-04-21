@@ -5,6 +5,7 @@ from torch import nn
 import time
 import numpy as np
 import torch.nn.functional as F
+from  draw_plots import  drawLearningCurve
 
 class Finetune():
     def __init__(self, args, model):
@@ -17,9 +18,12 @@ class Finetune():
         self.loss_weights = torch.where(class_dist == 0, class_dist, 1 / class_dist).to(DEVICE)  # get the inverse frequency
 
         opt = torch.optim.Adam(self.model.parameters(), lr=self.args.lr)
+        learnCurve = list()
         for k, trainset in enumerate(trainsets):
             print('Training Task ', k)
             training_iterator = DataLoader(trainset, batch_size=self.args.batch_size, shuffle=True, num_workers=0)
+            recode = dict()
+            recode[k] = []
             for epoch in range(self.args.n_epochs):
                 print('EPOCH ', epoch)
                 # Train the driving policy
@@ -44,7 +48,7 @@ class Finetune():
                     opt.step()
                     loss = loss.detach().cpu().numpy()
                     loss_hist.append(loss)
-
+                    recode[k].append(loss.item())
                     PRINT_INTERVAL = int(len(training_iterator) / 3)
                     if (i_batch + 1) % PRINT_INTERVAL == 0:
                         print('\tIter [{}/{} ({:.0f}%)]\tLoss: {}\t'.format(
@@ -52,9 +56,10 @@ class Finetune():
                             i_batch / len(training_iterator) * 100,
                             np.asarray(loss_hist)[-PRINT_INTERVAL:].mean(0)
                         ))
-            self.model.save_weights(self.args, k)
+
             # Evaluate the driving policy on the validation set
-            self.test(valsets)
+            # self.test(valsets)
+        drawLearningCurve(recode)
 
     def test(self, valsets):
         self.model.eval()
