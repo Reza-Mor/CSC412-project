@@ -33,7 +33,7 @@ def run(steering_network, args):
         if args.expert_drives:
             learner_action[0] = expert_steer
         else:
-            learner_action[0] = steering_network.eval(state, device=DEVICE)
+            learner_action[0] = steering_network.test(state, device=DEVICE)
             
         learner_action[1] = expert_gas
         learner_action[2] = expert_brake
