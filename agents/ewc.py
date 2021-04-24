@@ -58,12 +58,17 @@ class EWC():
                     loss_hist.append(loss.detach().cpu().numpy())
 
                     PRINT_INTERVAL = int(len(training_iterator) / 3)
+                    '''
                     if (i + 1) % PRINT_INTERVAL == 0:
                         print('\tIter [{}/{} ({:.0f}%)]\tLoss: {}\t'.format(
                             i, len(training_iterator),
                             i / len(training_iterator) * 100,
                             np.asarray(loss_hist)[-PRINT_INTERVAL:].mean(0)
                         ))
+                    '''
+                if (epoch+1) % 3 == 0:
+                    self.test(valsets)
+
             # save params for current task
             for n, p in self.weights.items():
                 self.prev_params[n] = p.clone().detach()
@@ -74,9 +79,8 @@ class EWC():
             for n, p in self.running_fisher.items():
                 self.normalized_fisher[n] = (p - min_fisher) / (max_fisher - min_fisher + 1e-32)
 
-            # Evaluate the driving policy on the validation set
-            self.test(valsets)
-        drawLearningCurve(recode)
+
+        #drawLearningCurve(recode)
 
     def total_loss(self, inputs, targets):
         # cross entropy loss

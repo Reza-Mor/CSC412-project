@@ -49,6 +49,7 @@ class Finetune():
                     loss = loss.detach().cpu().numpy()
                     loss_hist.append(loss)
                     recode[k].append(loss.item())
+                    '''
                     PRINT_INTERVAL = int(len(training_iterator) / 3)
                     if (i_batch + 1) % PRINT_INTERVAL == 0:
                         print('\tIter [{}/{} ({:.0f}%)]\tLoss: {}\t'.format(
@@ -56,10 +57,13 @@ class Finetune():
                             i_batch / len(training_iterator) * 100,
                             np.asarray(loss_hist)[-PRINT_INTERVAL:].mean(0)
                         ))
+                    '''
+                # Evaluate the driving policy on the validation set
+                if (epoch + 1) % 3 == 0:
+                    self.test(valsets)
+            self.model.save_weights(self.args, k)
 
-            # Evaluate the driving policy on the validation set
-            # self.test(valsets)
-        drawLearningCurve(recode)
+        #drawLearningCurve(recode)
 
     def test(self, valsets):
         self.model.eval()

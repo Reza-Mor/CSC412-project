@@ -128,5 +128,6 @@ def get_dataset(args):
                                           categorical=True,
                                           classes=args.n_steering_classes,
                                           transform=transforms.Compose(task_2_transforms))
-
+    if args.agent == 'iid':
+        return [torch.utils.data.ConcatDataset([training_dataset_0, training_dataset_1, training_dataset_2])], [torch.utils.data.ConcatDataset([validation_dataset_0, validation_dataset_1, validation_dataset_2])]
     return [training_dataset_0, training_dataset_1, training_dataset_2], [validation_dataset_0, validation_dataset_1, validation_dataset_2]

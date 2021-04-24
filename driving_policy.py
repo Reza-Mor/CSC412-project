@@ -77,6 +77,9 @@ class DiscreteDrivingPolicy(nn.Module):
         weights = torch.load(weights_filename)
         self.load_state_dict( {k:v for k,v in weights.items()}, strict=True)
 
+    def save_weights(self, args, task):
+        torch.save(self.state_dict(), '{}/{}_{}_{}.pth'.format(args.weights_out_folder, args.agent, args.noise_type, task))
+
     
 
 

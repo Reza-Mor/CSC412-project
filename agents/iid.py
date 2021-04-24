@@ -1,7 +1,4 @@
 from torch.utils.data import DataLoader
-import sys
-sys.path.append("..")
-from driving_policy import DiscreteDrivingPolicy
 import torch
 from utils import DEVICE, accuracy, get_class_distribution
 from torch import nn
@@ -10,10 +7,10 @@ import numpy as np
 import torch.nn.functional as F
 from  draw_plots import  drawLearningCurve
 
-class Offline():
-    def __init__(self, args):
+class IID():
+    def __init__(self, args, model):
         self.args = args
-        self.model = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
+        self.model = model
         self.loss_weights = torch.ones(args.n_steering_classes).to(DEVICE)
 
     def train(self, trainsets, valsets):
@@ -21,9 +18,10 @@ class Offline():
         self.loss_weights = torch.where(class_dist == 0, class_dist, 1 / class_dist).to(DEVICE)  # get the inverse frequency
 
         opt = torch.optim.Adam(self.model.parameters(), lr=self.args.lr)
+        learnCurve = list()
         for k, trainset in enumerate(trainsets):
             print('Training Task ', k)
-            training_iterator = DataLoader(trainset, batch_size=1, shuffle=True, num_workers=0)
+            training_iterator = DataLoader(trainset, batch_size=self.args.batch_size, shuffle=True, num_workers=0)
             recode = dict()
             recode[k] = []
             for epoch in range(self.args.n_epochs):
@@ -50,7 +48,8 @@ class Offline():
                     opt.step()
                     loss = loss.detach().cpu().numpy()
                     loss_hist.append(loss)
-
+                    recode[k].append(loss.item())
+                    '''
                     PRINT_INTERVAL = int(len(training_iterator) / 3)
                     if (i_batch + 1) % PRINT_INTERVAL == 0:
                         print('\tIter [{}/{} ({:.0f}%)]\tLoss: {}\t'.format(
@@ -58,9 +57,14 @@ class Offline():
                             i_batch / len(training_iterator) * 100,
                             np.asarray(loss_hist)[-PRINT_INTERVAL:].mean(0)
                         ))
-            # Evaluate the driving policy on the validation set
-            self.test(valsets)
-        drawLearningCurve(recode)
+                    '''
+                # Evaluate the driving policy on the validation set
+                if (epoch + 1) % 3 == 0:
+                    self.test(valsets)
+            self.model.save_weights(self.args, k)
+
+        #drawLearningCurve(recode)
+
     def test(self, valsets):
         self.model.eval()
         with torch.no_grad():
