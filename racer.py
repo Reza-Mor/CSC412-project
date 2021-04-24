@@ -13,7 +13,7 @@ from utils import DEVICE, str2bool
 
 import matplotlib.pyplot as plt
 import numpy as np
-from draw_plots import drawTimeCruve
+
 
 
 def run(steering_network, args):
@@ -24,8 +24,8 @@ def run(steering_network, args):
     learner_action = np.array([0.0, 0.0, 0.0])
     expert_action = None
     time=[]
-    learner_steer_direction=[]
-    expert_steer_direction=[]
+    steer_direction=[]
+    steer_direction=[]
     
     for t in range(args.timesteps):
         env.render()
@@ -41,24 +41,31 @@ def run(steering_network, args):
 
         if args.expert_drives:
             learner_action[0] = expert_steer
+            steer_direction.append(expert_steer)
         else:
             learner_action[0] = steering_network.test(state, device=DEVICE)
+            steer_direction.append(learner_action[0])
             
+        time.append(t)
         learner_action[1] = expert_gas
         learner_action[2] = expert_brake
 
         if args.save_expert_actions:
             scipy.misc.imsave(os.path.join(args.out_dir, 'expert_%d_%d_%f.jpg' % (args.run_id, t, expert_steer)), state)
 
-        learner_steer_direction.append(learner_action[0])
-        time.append(t)
-        expert_steer_direction.append(expert_steer)
+    
+    plt.plot(time,steer_direction)
+    plt.xlabel("Time")
+    plt.ylabel("Steering Direction")
 
-
+    if args.expert_drives:
+        filename = 'pid_expert_steering.png' 
+    else:
+        filename = args.learner_weights[:-4] + 'sterring_plot.png' 
+    plt.savefig('steering_plots/'+ filename)
     
     env.close()
-    drawTimeCruve(time, learner_steer_direction, expert_steer_direction, "learner steerig direction","expert steerig direction" )
- 
+   
 
 
 if __name__ == "__main__":
