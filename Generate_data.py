@@ -1,7 +1,7 @@
 
 from torchvision import datasets
 from torch.utils.data import DataLoader, Dataset
-from skimage.util import random_noise
+from skimage.util import random_noise, img_as_ubyte
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ https://github.com/mbeyeler/opencv-python-blueprints/blob/master/chapter1/filter
 
 
 #path to dataset
-root_dir = '/Users/estrella/Desktop/CSC412/project/dataset/train/'
+root_dir = 'dataset/train/'
 
 dataset = dl.DrivingDataset(root_dir)
 
@@ -36,12 +36,12 @@ def generate_data(root_dir,categorical_value, trans_function):
 
 
 
-def gauss_noise_1(image,mu = 0, variance=0.004):
-    gauss_img = random_noise(image, mode='gaussian', mean=mu, var=variance, clip=True)
+def gauss_noise_1(image,mu = 0, variance=0.9):
+    gauss_img = img_as_ubyte(random_noise(image, mode='gaussian', mean=mu, var=variance, clip=True))
     return gauss_img
 
-def gauss_noise_2(image,mu = 0.2, variance=0.01):
-    gauss_img = random_noise(image, mode='gaussian', mean=mu, var=variance, clip=True)
+def gauss_noise_2(image,mu = -0.2, variance=0.3):
+    gauss_img = img_as_ubyte(random_noise(image, mode='gaussian', mean=mu, var=variance, clip=True))
     return gauss_img
 
 def gauss_noise_3(image,mu = 0.1, variance=0.004):
@@ -98,10 +98,10 @@ def cool_and_noise2(image, gaussian=gauss_noise_2, color_filter=color_filter_coo
 
         
 #Generare original data
-task1= generate_data(root_dir,False, None)
+#task1= generate_data(root_dir,False, None)
 
 #Add gaussian noise
-task2= generate_data(root_dir,False, gauss_noise_1)
+#task2= generate_data(root_dir,False, gauss_noise_1)
 task3= generate_data(root_dir,False, gauss_noise_2)
 
 #apply warming color filter   
