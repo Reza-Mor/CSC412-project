@@ -27,8 +27,11 @@ def main(args):
         agent = agents.finetune.Finetune(args, driving_policy)
     elif args.agent == 'iid':
         agent = agents.iid.IID(args, driving_policy)
-    else:
+    elif args.agent == "EWC":
         agent = agents.ewc.EWC(args, driving_policy)
+    else:
+        agent = agents.generative_replay(args, driving_policy)
+
 
     for i in range(args.runs):
         agent.train(training_datasets, validation_datasets)
@@ -48,6 +51,15 @@ if __name__ == "__main__":
                         default='weights')
     parser.add_argument("--noise_type", help="type of noise added to each task",
                         default='gaussian')
+    
+       
+    #generative replay arguments
+    parser.add_argument("--cur_task_number", help="number of the currect taks", default= 0)
+    parser.add_argument("--gen", help="path to load generator model", default= None)
+    parser.add_argument("--pre_solver", help="path to load the previous solver model", default= None)
+    parser.add_argument("--pre_gen", help="path to load previous generator model", default= None)
+    parse.add_argument("--solver", help="path to load the solver model", default= None)
+    args = parser.parse_args()
     
     args = parser.parse_args()
 
