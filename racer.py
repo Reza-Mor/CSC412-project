@@ -11,6 +11,11 @@ from argparse import ArgumentParser
 from driving_policy import DiscreteDrivingPolicy
 from utils import DEVICE, str2bool
 
+import matplotlib.pyplot as plt
+import numpy as np
+from draw_plots import drawTimeCruve
+
+
 def run(steering_network, args):
     
     env = FullStateCarRacingEnv()
@@ -18,6 +23,9 @@ def run(steering_network, args):
     
     learner_action = np.array([0.0, 0.0, 0.0])
     expert_action = None
+    time=[]
+    learner_steer_direction=[]
+    expert_steer_direction=[]
     
     for t in range(args.timesteps):
         env.render()
@@ -30,6 +38,7 @@ def run(steering_network, args):
         expert_gas = expert_action[1]    # [0, 1]
         expert_brake = expert_action[2]  # [0, 1]
 
+
         if args.expert_drives:
             learner_action[0] = expert_steer
         else:
@@ -41,7 +50,16 @@ def run(steering_network, args):
         if args.save_expert_actions:
             scipy.misc.imsave(os.path.join(args.out_dir, 'expert_%d_%d_%f.jpg' % (args.run_id, t, expert_steer)), state)
 
+        learner_steer_direction.append(learner_action[0])
+        time.append(t)
+        expert_steer_direction.append(expert_steer)
+
+
+    
     env.close()
+    drawTimeCruve(time, learner_steer_direction, expert_steer_direction, "learner steerig direction","expert steerig direction" )
+ 
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
