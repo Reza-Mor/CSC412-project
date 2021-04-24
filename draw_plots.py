@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2 as cv2
 
 def drawLearningCurve(recode):
     names = recode.keys()
@@ -12,18 +13,77 @@ def drawLearningCurve(recode):
     plt.show()
 
 
-def drawHistagram(task1_result, task2_result, task3_result):
+def get_acc(line):
+    return float(line[line.index(':')+1:-1]) 
+
+def readResult():
+    dict={}
+    key=''
+    num=-1
+    result = open("result.txt", 'r')
+    for line in result:
+        line=line.strip()
+        if line and not 'Task' in line:
+            num=-1
+            key = line
+            dict.update({key:[]})
+        elif 'Task 0' in line:
+            num+=1
+            dict[key].append([get_acc(line)])
+        elif line:
+            dict[key][num].append(get_acc(line))
+    print(dict)
+    return dict 
+
+
+def arrange_dict():
+    dict=readResult()
+    gaussian={0:[[],[],[]],1:[[],[],[]],  2:[[],[],[]]}
+    filter={0:[[],[],[]],1:[[],[],[]],  2:[[],[],[]]}
+    for key in dict.keys():
+        if 'gaussian' in key:
+            for i in range(len(dict[key])):
+                gaussian[i][0].append(dict[key][i][0])
+                gaussian[i][1].append(dict[key][i][1])
+                gaussian[i][2].append(dict[key][i][2])
+   
+        elif 'filter' in key:
+            for l in range(len(dict[key])):
+                filter[l][0].append(dict[key][l][0])
+                filter[l][1].append(dict[key][l][1])
+                filter[l][2].append(dict[key][l][2])
+    return  gaussian, filter
+
+
+def drawAllHistagram():
+    gaussian, filter = arrange_dict()
+    for i in range(len(gaussian)):
+        drawHistagram(gaussian[i][0],gaussian[i][1], gaussian[i][2], "Gaussian"+str(i))
+
+    for i in range(len(filter)):
+        drawHistagram(filter[i][0],filter[i][1], filter[i][2], "Filter"+str(i))
+
+    dispayimages()
+    
+
+
+
+
+
+def drawHistagram(task1_result, task2_result,task3_result, filename):
     bar_width = 0.2
     index = np.array(range(len(task1_result)))
     rects1 = plt.bar(index, task1_result, bar_width,  label='task1')
     rects2 = plt.bar(index+bar_width, task2_result, bar_width,  label='task2')
     rects3 = plt.bar(index+2*bar_width, task3_result, bar_width,  label='task3')
-    plt.xticks(index + bar_width, ['finetune', 'ewc', 'offline'])  #add new agent here
+    plt.xticks(index + bar_width, ['finetune', 'ewc', 'generative replay'])  #add new agent here
     plt.ylim(ymax=100, ymin=0)
     plt.ylabel('Performance')
-
+    plt.title(filename)
     plt.legend()
+    plt.savefig("histgrams/"+filename)
     plt.show()
+   
 
 
 def drawTimeCruve(x, y1, y2, label1, label2):
@@ -34,6 +94,23 @@ def drawTimeCruve(x, y1, y2, label1, label2):
     plt.show()
 
 
+def dispayimages():
+     gauss0 = cv2.imread('histgrams/Gaussian0.png')
+     gauss1 = cv2.imread("histgrams/Gaussian1.png")
+     gauss2 = cv2.imread("histgrams/Gaussian2.png")
+     gauss_concate_Hozi=cv2.hconcat([gauss0, gauss1,gauss2])
+     filter0 = cv2.imread("histgrams/Filter0.png")
+     filter1 = cv2.imread("histgrams/Filter1.png")
+     filter2 = cv2.imread("histgrams/Filter2.png")
+     filter_concate_Hozi=cv2.hconcat([filter0,filter1,filter2])
+     concate_together = cv2.vconcat([gauss_concate_Hozi,filter_concate_Hozi])
+     cv2.imwrite('histgrams/all_histagrams.png', concate_together)
+
+
+
+    
+
+
 
 
 
@@ -41,19 +118,4 @@ def drawTimeCruve(x, y1, y2, label1, label2):
 
 
 if __name__ == '__main__':
-    task1_result = [80, 58, 60]   #with respect to order of agents above
-    task2_result = [40, 25, 30]
-    task3_result = [20, 20, 25]
-    #drawHistagram(task1_result, task2_result, task3_result)
-
-    test = {1:[2.994943857192993, 2.9940185546875,  2.9814703464508057,
-               2.8723857402801514, 2.657487392425537, 2.502932548522949,
-               2.139519453048706, 2.4010727405548096, 2.1511080265045166],
-            2:[2.6893320083618164,2.382406234741211,2.30564284324646,
-               2.0461392402648926,1.96821928024292,2.030503511428833,
-               1.9104994535446167,1.8491305112838745,1.9131875038146973],
-            3:[1.9826408624649048, 1.8170222043991089, 1.7612231969833374,
-               1.652228832244873, 1.7717312574386597, 1.690726637840271,
-               1.513128638267517, 1.7446374893188477, 1.6601581573486328]}
-    #drawLearningCurve(test)
-    #drawTimeCruve([0,1,2,3,4], [0,1,2,3,4],"label")
+    drawAllHistagram()
