@@ -1,54 +1,54 @@
 finetune gaussian
-	Task 0 val acc: 62.844879150390625
-	Task 1 val acc: 14.804933547973633
-	Task 2 val acc: 61.429649353027344
+Task 0 val acc: 64.46780522664388
+Task 1 val acc: 51.647918701171875
+Task 2 val acc: 50.4333864847819
 
-	Task 0 val acc: 63.37946701049805
-	Task 1 val acc: 61.3712043762207
-	Task 2 val acc: 62.06416320800781
+Task 0 val acc: 64.54522450764973
+Task 1 val acc: 62.969075520833336
+Task 2 val acc: 63.987744649251304
 
-	Task 0 val acc: 64.72335815429688
-	Task 1 val acc: 49.15156555175781
-	Task 2 val acc: 65.03388977050781
+Task 0 val acc: 64.78470865885417
+Task 1 val acc: 40.904007275899254
+Task 2 val acc: 64.07615280151367
 
   ewc gaussian
 
-  Task 0 val acc: 62.844879150390625
-	Task 1 val acc: 14.804933547973633
-	Task 2 val acc: 61.429649353027344
+  Task 0 val acc: 65.40613810221355
+  Task 1 val acc: 24.91841991742452
+  Task 2 val acc: 51.6146125793457
 
-  Task 0 val acc: 63.67945098876953
-	Task 1 val acc: 62.60205841064453
-	Task 2 val acc: 61.409603118896484
+  Task 0 val acc: 64.7435073852539
+  Task 1 val acc: 61.5527458190918
+  Task 2 val acc: 63.741408030192055
 
-  Task 0 val acc: 65.46546173095703
-	Task 1 val acc: 64.32164001464844
-	Task 2 val acc: 65.48477172851562
+  Task 0 val acc: 63.44245402018229
+  Task 1 val acc: 61.30494944254557
+  Task 2 val acc: 63.15782801310221
 
   fintune color filter
 
-  Task 0 val acc: 62.844879150390625
-  Task 1 val acc: 45.62868881225586
-  Task 2 val acc: 66.63990020751953
+  Task 0 val acc: 64.97722880045573
+  Task 1 val acc: 65.57899983723958
+  Task 2 val acc: 66.75809478759766
 
-  Task 0 val acc: 64.40172576904297
-	Task 1 val acc: 63.70003128051758
-	Task 2 val acc: 66.9733657836914
+  Task 0 val acc: 66.03272501627605
+  Task 1 val acc: 65.04882303873698
+  Task 2 val acc: 67.70595296223958
 
-  Task 0 val acc: 62.97028732299805
-  Task 1 val acc: 48.136985778808594
-  Task 2 val acc: 67.18760681152344
+  Task 0 val acc: 63.84363810221354
+  Task 1 val acc: 4.642213344573975
+  Task 2 val acc: 65.86028544108073
 
   ewc color filter
 
-  Task 0 val acc: 62.844879150390625
-  Task 1 val acc: 45.62868881225586
-  Task 2 val acc: 66.63990020751953
+  Task 0 val acc: 65.1179936726888
+  Task 1 val acc: 65.04761250813802
+  Task 2 val acc: 66.93817647298177
 
-  Task 0 val acc: 57.87615966796875
-	Task 1 val acc: 39.31481170654297
-	Task 2 val acc: 60.885562896728516
+  Task 0 val acc: 65.26991780598958
+  Task 1 val acc: 64.62471008300781
+  Task 2 val acc: 67.46125030517578
 
-  Task 0 val acc: 59.1386833190918
-	Task 1 val acc: 17.224397659301758
-	Task 2 val acc: 67.75334167480469
+  Task 0 val acc: 63.051047007242836
+  Task 1 val acc: 58.15115610758463
+  Task 2 val acc: 64.6660868326823

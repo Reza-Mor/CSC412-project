@@ -2,7 +2,15 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from torchvision import datasets, transforms
+#from torchvision import datasets #, transforms
+from scipy.interpolate import UnivariateSpline
+#import cv2
+import os
+import re
+from skimage.util import random_noise, img_as_ubyte
+from matplotlib import pyplot as plt
+
+
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -57,7 +65,16 @@ class DiscreteDrivingPolicy(nn.Module):
         return logits
     
     def test(self, state, device):
-        state = state.astype(np.float32)
+        """Please manually change the corresponding filter/noise to state
+        """
+        #plt.imshow(state)
+        #plt.show()
+        state = state.astype(np.float)
+        image=gauss_noise_1(state)
+        #image= gauss_noise_2(state)
+        #image= color_filter_warm(state.astype(np.uint8))
+        #image= color_filter_cool(state.astype(np.uint8))
+        state = image.astype(np.float32)
         state = np.ascontiguousarray(np.transpose(state, (2, 0, 1)))
         state = torch.tensor(state).to(torch.device(device))
         state = state.unsqueeze(0)
@@ -80,6 +97,45 @@ class DiscreteDrivingPolicy(nn.Module):
     def save_weights(self, args, task):
         torch.save(self.state_dict(), '{}/{}_{}_{}.pth'.format(args.weights_out_folder, args.agent, args.noise_type, task))
 
-    
 
+    
+def create_LUT_8UC1(x, y):
+    """Creates a look-up table using scipy's spline interpolation"""
+    spl = UnivariateSpline(x, y)
+    return spl(range(256))
+
+incr_ch_lut = create_LUT_8UC1([0, 64, 128, 192, 256],
+                              [0, 70, 140, 210, 256])
+decr_ch_lut = create_LUT_8UC1([0, 64, 128, 192, 256],
+                              [0, 30, 80, 120, 192])
+
+def color_filter_warm(image):
+
+    c_r, c_g, c_b = cv2.split(image)
+    c_r = cv2.LUT(c_r, incr_ch_lut).astype(np.uint8)
+    c_b = cv2.LUT(c_b, decr_ch_lut).astype(np.uint8)
+    image = cv2.merge((c_r, c_g, c_b))
+
+    c_h, c_s, c_v = cv2.split(cv2.cvtColor(image, cv2.COLOR_RGB2HSV))
+    c_s = cv2.LUT(c_s, incr_ch_lut).astype(np.uint8)
+    return cv2.cvtColor(cv2.merge((c_h, c_s, c_v)), cv2.COLOR_HSV2RGB)
+
+def color_filter_cool(image):
+    c_r, c_g, c_b = cv2.split(image)
+    c_r = cv2.LUT(c_r, decr_ch_lut).astype(np.uint8)
+    c_b = cv2.LUT(c_b, incr_ch_lut).astype(np.uint8)
+    image = cv2.merge((c_r, c_g, c_b))
+
+    # decrease color saturation
+    c_h, c_s, c_v = cv2.split(cv2.cvtColor(image, cv2.COLOR_RGB2HSV))
+    c_s = cv2.LUT(c_s, decr_ch_lut).astype(np.uint8)
+    return cv2.cvtColor(cv2.merge((c_h, c_s, c_v)), cv2.COLOR_HSV2RGB)
+
+def gauss_noise_1(image, mu=0.4, variance=0.2):
+    gauss_img = img_as_ubyte(random_noise(image, mode='gaussian', mean=mu, var=variance, clip=True))
+    return gauss_img
+
+def gauss_noise_2(image, mu=-0.4, variance=0.2):
+    gauss_img = img_as_ubyte(random_noise(image, mode='gaussian', mean=mu, var=variance, clip=True))
+    return gauss_img
 

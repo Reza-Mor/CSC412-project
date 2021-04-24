@@ -26,11 +26,25 @@ def drawHistagram(task1_result, task2_result, task3_result):
     plt.show()
 
 
+def drawTimeCruve(x, y1, y2, label1, label2):
+    plt.plot(x,y1, label=label1)
+    plt.plot(x,y2, label=label2)
+    plt.xlabel("Time")
+    plt.legend()
+    plt.show()
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     task1_result = [80, 58, 60]   #with respect to order of agents above
     task2_result = [40, 25, 30]
     task3_result = [20, 20, 25]
-    drawHistagram(task1_result, task2_result, task3_result)
+    #drawHistagram(task1_result, task2_result, task3_result)
 
     test = {1:[2.994943857192993, 2.9940185546875,  2.9814703464508057,
                2.8723857402801514, 2.657487392425537, 2.502932548522949,
@@ -41,4 +55,5 @@ if __name__ == '__main__':
             3:[1.9826408624649048, 1.8170222043991089, 1.7612231969833374,
                1.652228832244873, 1.7717312574386597, 1.690726637840271,
                1.513128638267517, 1.7446374893188477, 1.6601581573486328]}
-    drawLearningCurve(test)
+    #drawLearningCurve(test)
+    #drawTimeCruve([0,1,2,3,4], [0,1,2,3,4],"label")
