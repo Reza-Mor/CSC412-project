@@ -24,7 +24,7 @@ Here is the short descriptions for files.
 
 **full_state_car_racing_env.py**: the environment for cars to drive autonomously. 
 
-**main.py**: we use this to train the models.  Run the following command: python3 main.py --n_epochs=50 --batch_size=256 --weights_out_file=./weights/learner_0_supervised_learning.weights --train_dir=./dataset/train/ --weighted_loss=False ***Give --weights_out_file a separate argument each time so we have access to all the trained models we experiment with.
+**main.py**: we use this to train the models.  Run the following command: `python3 main.py --n_epochs=50 --batch_size=256 --weights_out_file=./weights/learner_0_supervised_learning.weights --train_dir=./dataset/train/ --weighted_loss=False` ***Give --weights_out_file a separate argument each time so we have access to all the trained models we experiment with.
 
 **pid.py**: this is the PID controller used in full_state_car_racing_env.py to get optimal expert steering direction.
 
