@@ -24,6 +24,21 @@ Task 2 val acc: 64.07615280151367
   Task 0 val acc: 63.44245402018229
   Task 1 val acc: 61.30494944254557
   Task 2 val acc: 63.15782801310221
+  
+  gr gaussian 
+  Task 0 val acc: 75.42801920572917
+  Task 1 val acc: 70.78854370117188
+  Task 2 val acc: 75.02562967936198
+
+  Task 0 val acc: 70.65396118164062
+  Task 1 val acc: 70.42806498209636
+  Task 2 val acc: 70.00729370117188
+
+  Task 0 val acc: 72.75293731689453
+  Task 1 val acc: 65.13438415527344
+  Task 2 val acc: 74.88419087727864
+  
+  
 
   fintune color filter
 
@@ -38,6 +53,9 @@ Task 2 val acc: 64.07615280151367
   Task 0 val acc: 63.84363810221354
   Task 1 val acc: 4.642213344573975
   Task 2 val acc: 65.86028544108073
+  
+  
+  
 
   ewc color filter
 
@@ -52,3 +70,20 @@ Task 2 val acc: 64.07615280151367
   Task 0 val acc: 63.051047007242836
   Task 1 val acc: 58.15115610758463
   Task 2 val acc: 64.6660868326823
+  
+  
+  gr color filter
+  Task 0 val acc: 75.21317545572917
+  Task 1 val acc: 72.33568572998047
+  Task 2 val acc: 69.87231953938802
+
+  Task 0 val acc: 71.08887990315755
+  Task 1 val acc: 74.3278071085612
+  Task 2 val acc: 69.3113530476888
+
+  Task 0 val acc: 71.26458994547527
+  Task 1 val acc: 70.5330327351888
+  Task 2 val acc: 75.30030059814453
+  
+  
+  

@@ -5,6 +5,7 @@ import argparse
 import agents.finetune
 import agents.ewc
 import agents.iid
+import agents.generative_replay
 import random
 
 from dataset_loader import get_dataset
@@ -30,7 +31,7 @@ def main(args):
     elif args.agent == "EWC":
         agent = agents.ewc.EWC(args, driving_policy)
     else:
-        agent = agents.generative_replay(args, driving_policy)
+        agent = agents.generative_replay.Gen_Replay(args)
 
 
     for i in range(args.runs):
@@ -51,15 +52,6 @@ if __name__ == "__main__":
                         default='weights')
     parser.add_argument("--noise_type", help="type of noise added to each task",
                         default='gaussian')
-    
-       
-    #generative replay arguments
-    parser.add_argument("--cur_task_number", help="number of the currect taks", default= 0)
-    parser.add_argument("--gen", help="path to load generator model", default= None)
-    parser.add_argument("--pre_solver", help="path to load the previous solver model", default= None)
-    parser.add_argument("--pre_gen", help="path to load previous generator model", default= None)
-    parse.add_argument("--solver", help="path to load the solver model", default= None)
-    args = parser.parse_args()
     
     args = parser.parse_args()
 

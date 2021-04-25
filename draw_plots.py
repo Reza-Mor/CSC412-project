@@ -73,15 +73,16 @@ if __name__ == '__main__':
     plt.ylabel('fraction')
     plt.savefig('class_dist.png')
     '''
-    '''
-    acc_finetune = get_acc('gaussian_finetune.log')
-    print(mean_confidence_interval(acc_finetune))
-    acc_ewc = get_acc('gaussian_ewc.log')
-    print(mean_confidence_interval(acc_ewc))
-    '''
 
-    res_finetune = get_res('gaussian_finetune.log')
-    res_ewc = get_res('gaussian_ewc.log')
+    acc_finetune = get_acc('gaussian_gr.log')
+    print(mean_confidence_interval(acc_finetune))
+    acc_ewc = get_acc('gaussian_gr.log')
+    print(mean_confidence_interval(acc_ewc))
+
+    '''
+    res_finetune = get_res('filter_finetune.log')
+    res_ewc = get_res('filter_ewc.log')
+    res_gr = get_res('filter_gr.log')
 
     fig, axes = plt.subplots(3, 3, figsize=(6, 5))
 
@@ -90,11 +91,14 @@ if __name__ == '__main__':
         for j in range(3):
             l_fintune = []
             l_ewc = []
+            l_gr = []
             for k in range(2, 30, 3):
                 l_fintune.append(res_finetune[(i, k, j)])
                 l_ewc.append(res_ewc[(i, k, j)])
+                l_gr.append(res_gr[(i, k, j)])
             ax_1 = axes[j][i].plot(range(2, 30, 3), l_fintune, color='red')
             ax_2 = axes[j][i].plot(range(2, 30, 3), l_ewc, color='blue')
+            ax_3 = axes[j][i].plot(range(2, 30, 3), l_gr, color='green')
             if j < 2:
                 axes[j][i].get_xaxis().set_visible(False)
             else:
@@ -105,8 +109,8 @@ if __name__ == '__main__':
                 axes[j][i].set_ylabel('Task {} (Acc)'.format(j+1))
             axes[j][i].set_ylim([0, 80])
             axes[j][i].title.set_visible(False)
-    fig.legend([ax_1, ax_2], labels=['Finetune', 'EWC'])
+    fig.legend([ax_1, ax_2, ax_3], labels=['Finetune', 'EWC', 'GR'])
     plt.subplots_adjust(wspace=0.03, hspace=0.1)
     plt.savefig('t.png')
-
+    '''
 

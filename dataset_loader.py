@@ -92,9 +92,13 @@ def get_dataset(args):
         return gauss_img
 
     base_train_transforms = [
+        transforms.ToPILImage(),
+        transforms.Resize(28),
         transforms.ToTensor()
     ]
     base_test_transforms = [
+        transforms.ToPILImage(),
+        transforms.Resize(28),
         transforms.ToTensor()
     ]
     training_dataset_0 = DrivingDataset(root_dir=args.train_dir,
