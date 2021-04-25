@@ -20,7 +20,7 @@ Here is the short descriptions for files.
 
 **driving_policy.py**: this is the CNN+Feed Forward model. It gets used in full_state_car_racing_env.py.
 
-**car_racing**: a top-down racing environment. It is used in full_state_car_racing_env.py. 
+**car_racing.py**: a top-down racing environment. It is used in full_state_car_racing_env.py. 
 
 **full_state_car_racing_env.py**: the environment for cars to drive autonomously. 
 
