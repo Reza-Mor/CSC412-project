@@ -1,21 +1,21 @@
 
 Here is the short descriptions for files.
 
-_agents_:  this is the directory that contains the continual learning models: iid, ewc, finetune and generative_replay
+**agents**:  this is the directory that contains the continual learning models: iid, ewc, finetune and generative_replay
 
-histograms:  this is the directory that contains histograms of accuracies for our models performed on pre-existing image test sets.
+**histograms**:  this is the directory that contains histograms of accuracies for our models performed on pre-existing image test sets.
 
-dataset.zip: this contains the original images used for training and testing.
+**dataset.zip**: this contains the original images used for training and testing.
 
-steering_plots: the directory that contains the steering direction vs time plots for the tests on the go 
+**steering_plots**: the directory that contains the steering direction vs time plots for the tests on the go 
 
-Weights:  the directory that contains the tuned parameters obtained from training
+**Weights**:  the directory that contains the tuned parameters obtained from training
 
-racer.py: this is the file that runs the model on the environment. We load the learned weights by giving it the path to the saved weights (see --learner_weights).
+**racer.py**: this is the file that runs the model on the environment. We load the learned weights by giving it the path to the saved weights (see --learner_weights).
 
-dataset_loader.py:  it applies filters/gaussian noises to data images to generate different data sets.  
+**dataset_loader.py**:  it applies filters/gaussian noises to data images to generate different data sets.  
 
-driving_policy.py: this is the CNN+Feed Forward model. It gets used in full_state_car_racing_env.py.
+**driving_policy.py**: this is the CNN+Feed Forward model. It gets used in full_state_car_racing_env.py.
 
 car_racing: a top-down racing environment. It is used in full_state_car_racing_env.py.
 
