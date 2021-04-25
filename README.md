@@ -13,10 +13,8 @@ Here is the short descriptions for files.
 **Weights**:  the directory that contains the tuned parameters obtained from training
 
 **racer.py**: this is the file that runs the models on the environment. We load the learned weights by giving it the path to the saved weights (see --learner_weights). 
-
-        For expert driver (PID controller), run:  python racer.py --timesteps 50000 --expert_drives True
-        
-        For each of the trained models in the weights directory, go to driving policy and change the noise/filter accordingly. Then run: racer.py --timesteps         50000 --learner_weights {the pth file}. For example, to see the result for ewc_filter_0.pth, first apply filter_0 in driving policy, then run: python racer.py --timesteps 50000 --learner_weights ewc_filter_0.pth
+        For expert driver (PID controller), run:  `python racer.py --timesteps 50000 --expert_drives True`
+        For each of the trained models in the weights directory, go to driving policy and change the noise/filter accordingly. Then run `racer.py --timesteps         50000 --learner_weights {the pth file}`. For example, to see the result for ewc_filter_0.pth, first apply filter_0 in driving policy, then run: `python racer.py --timesteps 50000 --learner_weights ewc_filter_0.pth`
 
 **dataset_loader.py**:  it applies filters/gaussian noises to data images to generate different data sets.  
 
