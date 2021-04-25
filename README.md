@@ -1,7 +1,7 @@
 
 Here is the short descriptions for files.
 
-agents:  this is the directory that contains the continual learning models: iid, ewc, finetune and generative_replay
+_agents_:  this is the directory that contains the continual learning models: iid, ewc, finetune and generative_replay
 
 histograms:  this is the directory that contains histograms of accuracies for our models performed on pre-existing image test sets.
 
